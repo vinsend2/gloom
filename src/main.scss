@@ -1,0 +1,253 @@
+// constants to do with card assets
+$source-width: 592px;
+$source-height: 874px;
+
+$dark-1: #000000;
+$dark-2: #323232;
+$light-1: #ff1e56;
+$light-2: #ffac41;
+
+html {
+  font-size: 12px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #323232;
+  color: #ffac41;
+}
+
+h1 {
+  display: inline-block;
+  font-size: 4rem;
+  margin-top: 0;
+}
+
+p {
+  font-size: 2rem;
+  margin: 0;
+}
+
+li {
+  font-size: 1.5rem;
+}
+
+input {
+  font-family: monospace;
+  background-color: $dark-2;
+  color: $light-2;
+  border-style: ridge;
+  margin: 5px 0;
+}
+
+.emphasize {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.top-section {
+  background-color: $dark-1;
+  padding: 18px;
+  border-bottom: 2px solid $light-1;
+}
+
+.summary {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+
+  a {
+    color: $light-1;
+
+    &:hover {
+      color: lighten($light-1, 10%);
+    }
+  }
+}
+
+.main-section {
+  padding: 18px;
+}
+
+.card {
+  $height: 300px;
+  $width: $height * $source-width / $source-height;
+  border-radius: 8px;
+
+  height: $height;
+  width: $width;
+}
+
+.seed-input {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 15px;
+
+  label {
+    display: block;
+    font-size: 1.5rem;
+  }
+  input {
+    font-size: 2rem;
+    padding: 0.3rem;
+  }
+  button {
+    margin-top: 36px;
+    margin-left: 5px;
+  }
+}
+
+.players-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+
+  .player {
+    display: flex;
+    flex-direction: column;
+ 
+    margin-right: 20px;
+  }
+}
+
+.toggle {
+  display: inline-block;
+  margin: 0 auto 10px auto;
+  width: 80px;
+  background-color: $light-1;
+  color: white;
+  border-style: ridge;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.player-title {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: $light-1;
+  text-align: center;
+  margin-bottom: 15px;
+  border: 1px solid $light-1;
+  padding: 5px;
+}
+
+.flip .toggle {
+  background-color: $light-2;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.source-link {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+
+  $size: 36px;
+  width: $size;
+  height: $size;
+  border-radius: $size / 2;
+
+  background-color: $light-2;
+
+  a {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    margin: 2px 0 0 2px;
+  }
+
+  .github-mark {
+    width: 32px;
+    height: 32px;
+    color: white;
+  }
+}
+
+.set-selection {
+  // display: flex;
+  p {
+    font-size: 1.5rem;
+  }
+  margin-bottom: 10px;
+}
+
+.radio-button-group {
+  display: flex;
+  align-items: center;
+}
+
+.radio-button-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  font-size: 1.2em;
+
+  &.selected {
+    text-decoration: underline;
+  }
+
+  label {
+    display: inline-block;
+    margin-left: 2px;
+  }
+}
+
+// Flip card effect -- credit to https://www.w3schools.com/howto/howto_css_flip_card.asp
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  $height: 300px;
+  $width: $height * $source-width / $source-height;
+
+  height: $height;
+  width: $width;
+  display: inline-block;
+
+  border: 1px solid transparent;
+  background-color: transparent;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+  transform: rotateX(0deg);
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
