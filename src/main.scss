@@ -105,6 +105,7 @@ input {
   .player {
     display: flex;
     flex-direction: column;
+    
  
     margin-right: 20px;
   }
@@ -114,6 +115,7 @@ input {
   display: inline-block;
   margin: 0 auto 10px auto;
   width: 80px;
+ 
   background-color: $light-1;
   color: white;
   border-style: ridge;
@@ -250,4 +252,11 @@ input {
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
+}
+.hide {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;  
 }

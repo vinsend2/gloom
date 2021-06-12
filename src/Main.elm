@@ -8,6 +8,9 @@ import Random
 import Random.List
 
 
+
+
+
 seedFromInput : String -> Random.Seed
 seedFromInput str =
     str
@@ -35,11 +38,10 @@ type alias Model =
     , showPlayer2Cards : Bool
     , showPlayer3Cards : Bool
     , showPlayer4Cards : Bool
-          , showPlayer5Cards : Bool
-                , showPlayer6Cards : Bool
-                , showPlayer7Cards : Bool
-                , showPlayer8Cards : Bool
-                     , showPlayer9Cards : Bool
+    , remove1 : Bool
+    , remove2 : Bool
+    , remove3 : Bool
+    , remove4 : Bool
     }
 
 
@@ -51,11 +53,10 @@ init _ =
       , showPlayer2Cards = False
       , showPlayer3Cards = False
       , showPlayer4Cards = False
-            , showPlayer5Cards = False
-                , showPlayer6Cards = False
-                , showPlayer7Cards = False
-                , showPlayer8Cards = False
-                     , showPlayer9Cards = False
+      , remove1 = False
+      , remove2 = False
+      , remove3 = False
+      , remove4 = False
       }
     , Cmd.none
     )
@@ -68,15 +69,10 @@ type Msg
     | ToggleShowPlayer2Cards
     | ToggleShowPlayer3Cards
     | ToggleShowPlayer4Cards
-    | ToggleShowPlayer5Cards
-    | ToggleShowPlayer6Cards
-    | ToggleShowPlayer7Cards
-    | ToggleShowPlayer8Cards
-    | ToggleShowPlayer9Cards
-   
- 
-   
-    
+    | ToggleShowPlayer1
+    | ToggleShowPlayer2
+    | ToggleShowPlayer3
+    | ToggleShowPlayer4
     | FillRandomSeed
 
 
@@ -90,11 +86,10 @@ update msg model =
                 , showPlayer2Cards = False
                 , showPlayer3Cards = False
                 , showPlayer4Cards = False
-                 , showPlayer5Cards = False
-                , showPlayer6Cards = False
-                , showPlayer7Cards = False
-                , showPlayer8Cards = False
-                     , showPlayer9Cards = False
+                 , remove1 = False
+                  , remove2 = False
+                  , remove3 = False
+                 , remove4 = False
               }
             , Cmd.none
             )
@@ -106,11 +101,10 @@ update msg model =
                 , showPlayer2Cards = False
                 , showPlayer3Cards = False
                 , showPlayer4Cards = False
-                      , showPlayer5Cards = False
-                , showPlayer6Cards = False
-                , showPlayer7Cards = False
-                , showPlayer8Cards = False
-                     , showPlayer9Cards = False
+                    , remove1 = False
+                  , remove2 = False
+                  , remove3 = False
+                 , remove4 = False
               }
             , Cmd.none
             )
@@ -130,22 +124,19 @@ update msg model =
         ToggleShowPlayer4Cards ->
             ( { model | showPlayer4Cards = not model.showPlayer4Cards }, Cmd.none )
 
-        ToggleShowPlayer5Cards ->
-            ( { model | showPlayer5Cards = not model.showPlayer5Cards }, Cmd.none )
+        ToggleShowPlayer1 ->
+            ( { model | remove1 = not model.remove1 }, Cmd.none )
 
-        ToggleShowPlayer6Cards ->
-            ( { model | showPlayer6Cards = not model.showPlayer6Cards }, Cmd.none )
+        ToggleShowPlayer2 ->
+            ( { model | remove2 = not model.remove2 }, Cmd.none )
 
-        ToggleShowPlayer7Cards ->
-            ( { model | showPlayer7Cards = not model.showPlayer7Cards }, Cmd.none )
+        ToggleShowPlayer3 ->
+            ( { model | remove3 = not model.remove3 }, Cmd.none )
 
-        ToggleShowPlayer8Cards ->
-            ( { model | showPlayer8Cards = not model.showPlayer8Cards }, Cmd.none )
+        ToggleShowPlayer4 ->
+            ( { model | remove4 = not model.remove4 }, Cmd.none )
 
-        ToggleShowPlayer9Cards ->
-            ( { model | showPlayer9Cards = not model.showPlayer9Cards }, Cmd.none )
-
-       
+            
 
         FillRandomSeed ->
             let
@@ -175,12 +166,12 @@ renderCard imageUrl =
         ]
 
 
-renderPlayer : Msg -> Bool -> Int -> Int -> Int -> Html Msg
-renderPlayer handleClick showCards first second index =
+renderPlayer : Msg -> Bool ->Bool ->Msg -> Int -> Int -> Int -> Html Msg
+renderPlayer handleClick showCards remove removePlayer first second index =
     let
         imageUrl : Int -> String
         imageUrl number =
-            String.fromInt number ++ ".png" 
+            String.fromInt number ++ ".png"
     in
     div
         [ class "player"
@@ -190,14 +181,28 @@ renderPlayer handleClick showCards first second index =
 
              else
                 ""
-            )
+            )   , class
+            (if remove then
+                "hide"
+
+             else
+                ""
+            ) 
+
         ]
-        [ div [  ] [  ]
-        
-           
-        , div [ class "cards-container", onClick handleClick  ]
+        [ div [ class "player-title" ] [ text ("Player " ++ String.fromInt index) ]
+        , button [ class "toggle", onClick removePlayer  ]
+            [ text
+                (if showCards then
+                    "Скрыть"
+
+                 else
+                    "Скрыть"
+                )
+            ]
+        , div [ class "cards-container", onClick handleClick ]
             [ renderCard (imageUrl first)
-            
+            , renderCard (imageUrl second)
             ]
         ]
 
@@ -222,19 +227,14 @@ renderPlayers model seedValue =
                 |> seedFromInput
                 |> Random.step (Random.List.shuffle (List.range min max))
                 |> Tuple.first
-                |> List.take 9
+                |> List.take 8
     in
     case numbers of
-        [ first, second, third, fourth, fifth, sixth, seventh, eigth, nine ] ->
-            [ renderPlayer ToggleShowPlayer1Cards model.showPlayer1Cards first second 1
-            , renderPlayer ToggleShowPlayer2Cards model.showPlayer2Cards second fourth 2
-            , renderPlayer ToggleShowPlayer3Cards model.showPlayer3Cards third sixth 3
-            , renderPlayer ToggleShowPlayer4Cards model.showPlayer4Cards fourth eigth 4
-              , renderPlayer ToggleShowPlayer5Cards model.showPlayer5Cards fifth eigth 5
-                  , renderPlayer ToggleShowPlayer6Cards model.showPlayer6Cards sixth eigth 6
-                      , renderPlayer ToggleShowPlayer7Cards model.showPlayer7Cards seventh eigth 7
-                          , renderPlayer ToggleShowPlayer8Cards model.showPlayer8Cards eigth eigth 8
-                              , renderPlayer ToggleShowPlayer9Cards model.showPlayer9Cards nine eigth 9
+        [ first, second, third, fourth, fifth, sixth, seventh, eigth ] ->
+            [ renderPlayer ToggleShowPlayer1Cards model.showPlayer1Cards model.remove1 ToggleShowPlayer1 first second 1
+            , renderPlayer ToggleShowPlayer2Cards model.showPlayer2Cards model.remove2 ToggleShowPlayer2 third fourth 2
+            , renderPlayer ToggleShowPlayer3Cards model.showPlayer3Cards model.remove3 ToggleShowPlayer3 fifth sixth 3
+            , renderPlayer ToggleShowPlayer4Cards model.showPlayer4Cards model.remove4 ToggleShowPlayer4 seventh eigth 4
             ]
 
         _ ->
@@ -329,11 +329,8 @@ view model =
             , renderSeedInput model
             , renderPlayersContainer model
             ]
-        , div [ class "source-link" ]
-            [ a [ href "https://github.com/vinsend2/battle-goals", target "_blank" ]
-                [ img [ alt "Github Mark", class "github-mark", src "GitHub-Mark-32px.png" ] []
-                ]
-            ]
+        
+            
         ]
 
 
